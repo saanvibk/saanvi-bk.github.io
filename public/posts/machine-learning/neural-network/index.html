@@ -24,6 +24,7 @@ flowchart TD
     J --&gt; K[Agents]
     K --&gt; L[Evaluation &#43; Deployment]
 
+
 The goal of this section is not merely to train neural networks.">
 <meta name="author" content="">
 <link rel="canonical" href="http://localhost:1313/posts/machine-learning/neural-network/">
@@ -81,13 +82,6 @@ The goal of this section is not merely to train neural networks.">
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script>
-<script type="module">
-    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({
-        startOnLoad: true,
-        theme: document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "default"
-    });
 </script>
 </head>
 <body id="top">
@@ -153,6 +147,7 @@ flowchart TD
     J --&gt; K[Agents]
     K --&gt; L[Evaluation + Deployment]
 </pre>
+
 <p>The goal of this section is not merely to train neural networks.</p>
 <p>You should eventually be able to explain:</p>
 <p>How does data enter a neural network, how does the network produce a prediction, how does it calculate its error, how does it learn from that error, and how do we implement the entire process in PyTorch?</p>
@@ -167,6 +162,7 @@ flowchart TD
     B --&gt; C[ML Algorithm]
     C --&gt; D[Prediction]
 </pre>
+
 <p>For example, predicting whether an email is spam:</p>
 <pre class="mermaid">
 flowchart TD
@@ -184,6 +180,7 @@ flowchart TD
 
     G --&gt; H[Spam / Not Spam]
 </pre>
+
 <p>A human often decides what features are useful.</p>
 <p>Deep learning tries to learn useful representations automatically.</p>
 <pre class="mermaid">
@@ -192,6 +189,7 @@ flowchart TD
     B --&gt; C[Learned Features]
     C --&gt; D[Prediction]
 </pre>
+
 <p>For an image:</p>
 <pre class="mermaid">
 flowchart TD
@@ -200,6 +198,7 @@ flowchart TD
     C --&gt; D[Objects]
     D --&gt; E[Classification]
 </pre>
+
 <p>The network learns these representations from data.</p>
 <p>PART 2 — Neural Networks</p>
 <blockquote>
@@ -213,6 +212,7 @@ flowchart LR
     D --&gt; E[Activation]
     E --&gt; F[Prediction]
 </pre>
+
 <hr>
 <h1 id="1-input--what-enters-the-neural-network">1. Input — What enters the neural network?<a hidden class="anchor" aria-hidden="true" href="#1-input--what-enters-the-neural-network">#</a></h1>
 <p>We first give the network some data.</p>
@@ -363,6 +363,7 @@ flowchart LR
     B --&gt; C[&#34;Activation: ReLU(z)&#34;]
     C --&gt; D[Output]
 </pre>
+
 <h3 id="but-why-do-we-need-activation">But WHY do we need activation?<a hidden class="anchor" aria-hidden="true" href="#but-why-do-we-need-activation">#</a></h3>
 <p>This is extremely important.</p>
 <p>Imagine we have multiple layers:</p>
@@ -410,6 +411,7 @@ flowchart LR
     B3 --&gt; C
     B4 --&gt; C
 </pre>
+
 <p>Each neuron has its <strong>own weights and bias</strong>.</p>
 <p>Therefore, each neuron can learn a different pattern.</p>
 <p>For example, conceptually:</p>
@@ -435,6 +437,7 @@ flowchart LR
     B --&gt; C[Hidden Layer 2]
     C --&gt; D[Output Layer]
 </pre>
+
 <h3 id="input-layer">Input layer<a hidden class="anchor" aria-hidden="true" href="#input-layer">#</a></h3>
 <p>Receives the features.</p>
 <p>Example:</p>
@@ -495,6 +498,7 @@ flowchart LR
     E --&gt; F[Output]
     F --&gt; G[Prediction]
 </pre>
+
 <p>For every layer, the basic process is:</p>
 <p>$$
 z=Wx+b
@@ -560,6 +564,7 @@ flowchart LR
     B[Model Prediction] --&gt; C
     C --&gt; D[Loss]
 </pre>
+
 <p>For example:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Good prediction → small loss
 </span></span><span style="display:flex;"><span>Bad prediction  → large loss
@@ -689,6 +694,7 @@ flowchart TD
     E --&gt; F[Updated Weights &amp; Biases]
     F --&gt; A
 </pre>
+
 <p>For simple gradient descent:</p>
 <p>$$
 w_{new}=w_{old}-\eta gradient
@@ -724,6 +730,7 @@ flowchart TD
     F --&gt; G[Optimizer Updates Weights]
     G --&gt; B
 </pre>
+
 <p>The network repeats this process <strong>many times</strong>.</p>
 <p>Each update tries to make the model slightly better.</p>
 <p>Over thousands or millions of updates, the weights can become very useful.</p>
@@ -766,6 +773,7 @@ flowchart TD
     G --&gt; H[Next Epoch]
     H --&gt; B
 </pre>
+
 <hr>
 <h1 id="22-so-who-actually-learns">22. So WHO actually learns?<a hidden class="anchor" aria-hidden="true" href="#22-so-who-actually-learns">#</a></h1>
 <p>This is the key mental model.</p>
@@ -853,6 +861,7 @@ flowchart TD
     N --&gt; O[Update Weights &amp; Biases]
     O --&gt; B
 </pre>
+
 <h3 id="the-most-important-distinction">The most important distinction:<a hidden class="anchor" aria-hidden="true" href="#the-most-important-distinction">#</a></h3>
 <p><strong>Forward pass:</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Input → layers → prediction → loss
@@ -985,6 +994,12 @@ flowchart TD
     })
 
 </script>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true });
+</script>
+
 </body>
 
 </html>
