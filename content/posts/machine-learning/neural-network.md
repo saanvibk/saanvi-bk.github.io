@@ -1,6 +1,6 @@
 
-Deep Learning + PyTorch — AI/ML Engineer Notes
-0. Where we are in the roadmap
+# **Deep Learning + PyTorch — AI/ML Engineer Notes**
+ Where we are in the roadmap
 
 You can think of your journey as:
 
