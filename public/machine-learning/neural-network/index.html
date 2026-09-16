@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>My New Hugo Project</title>
+<meta name="keywords" content="">
+<meta name="description" content="Deep Learning &#43; PyTorch — AI/ML Engineer Notes
+0. Where we are in the roadmap
+You can think of your journey as:
+flowchart TD
+
+    A[Python] --&gt; B[Math]
+    B --&gt; C[Classical Machine Learning]
+    C --&gt; D[Backend &#43; System Design]
+    D --&gt; E[Deep Learning &#43; PyTorch]
+    E --&gt; F[CNNs]
+    F --&gt; G[RNNs / LSTMs]
+    G --&gt; H[Transformers]
+    H --&gt; I[LLMs]
+    I --&gt; J[RAG]
+    J --&gt; K[Agents]
+    K --&gt; L[Evaluation &#43; Deployment]
+The goal of this section is not merely to train neural networks.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/machine-learning/neural-network/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.cd9298b33628769aa1bc1acebbbfd7aa11ce81dfe03484d479e1907760249a1d.css" integrity="sha256-zZKYszYodpqhvBrOu7/XqhHOgd/gNITUeeGQd2Akmh0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/machine-learning/neural-network/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="header-nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="My New Hugo Project (Alt + H)">My New Hugo Project</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" class="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu" class="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      
+    </h1>
+    <div class="post-meta">
+
+
+
+</div>
+  </header> 
+  <div class="post-content md-content"><p>Deep Learning + PyTorch — AI/ML Engineer Notes
+0. Where we are in the roadmap</p>
+<p>You can think of your journey as:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+
+    A[Python] --&gt; B[Math]
+    B --&gt; C[Classical Machine Learning]
+    C --&gt; D[Backend + System Design]
+    D --&gt; E[Deep Learning + PyTorch]
+    E --&gt; F[CNNs]
+    F --&gt; G[RNNs / LSTMs]
+    G --&gt; H[Transformers]
+    H --&gt; I[LLMs]
+    I --&gt; J[RAG]
+    J --&gt; K[Agents]
+    K --&gt; L[Evaluation + Deployment]
+</code></pre><p>The goal of this section is not merely to train neural networks.</p>
+<p>You should eventually be able to explain:</p>
+<p>How does data enter a neural network, how does the network produce a prediction, how does it calculate its error, how does it learn from that error, and how do we implement the entire process in PyTorch?</p>
+<p>PART 1 — What is Deep Learning?</p>
+<ol>
+<li>Machine Learning vs Deep Learning</li>
+</ol>
+<p>In traditional ML, we often have:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+    A[Raw Data] --&gt; B[Feature Engineering]
+    B --&gt; C[ML Algorithm]
+    C --&gt; D[Prediction]
+</code></pre><p>For example, predicting whether an email is spam:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+    A[Email] --&gt; B[Extract Features]
+
+    B --&gt; C[number of links]
+    B --&gt; D[number of words]
+    B --&gt; E[sender information]
+    B --&gt; F[suspicious words]
+
+    C --&gt; G[Logistic Regression]
+    D --&gt; G
+    E --&gt; G
+    F --&gt; G
+
+    G --&gt; H[Spam / Not Spam]
+</code></pre><p>A human often decides what features are useful.</p>
+<p>Deep learning tries to learn useful representations automatically.</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+    A[Raw Data] --&gt; B[Neural Network]
+    B --&gt; C[Learned Features]
+    C --&gt; D[Prediction]
+</code></pre><p>For an image:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+    A[Pixels] --&gt; B[Edges]
+    B --&gt; C[Shapes]
+    C --&gt; D[Objects]
+    D --&gt; E[Classification]
+</code></pre><p>The network learns these representations from data.</p>
+<p>PART 2 — Neural Networks</p>
+<blockquote>
+<p><strong>Predict whether a student will pass based on hours studied and attendance.</strong></p>
+</blockquote>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR
+    A[Hours Studied] --&gt; C[Neuron]
+    B[Attendance] --&gt; C
+    C --&gt; D[Weighted Sum]
+    D --&gt; E[Activation]
+    E --&gt; F[Prediction]
+</code></pre><hr>
+<h1 id="1-input--what-enters-the-neural-network">1. Input — What enters the neural network?<a hidden class="anchor" aria-hidden="true" href="#1-input--what-enters-the-neural-network">#</a></h1>
+<p>We first give the network some data.</p>
+<p>Suppose one student has:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Hours studied = 5
+</span></span><span style="display:flex;"><span>Attendance = 80%
+</span></span></code></pre></div><p>So our input is:</p>
+<p>$$
+X = [5,80]
+$$</p>
+<p>But usually, before giving data to a neural network, we <strong>scale/normalize</strong> features so that values have reasonable ranges.</p>
+<p>For example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Hours studied = 5      → 0.5
+</span></span><span style="display:flex;"><span>Attendance = 80%       → 0.8
+</span></span></code></pre></div><p>So the network might receive:</p>
+<p>$$
+X=[0.5,0.8]
+$$</p>
+<p>These numbers are simply the <strong>input features</strong>.</p>
+<p>The neural network doesn&rsquo;t understand the concept of &ldquo;hours studied&rdquo; or &ldquo;attendance&rdquo; like a human does. It just receives numbers.</p>
+<hr>
+<h1 id="2-weights--how-important-is-each-input">2. Weights — How important is each input?<a hidden class="anchor" aria-hidden="true" href="#2-weights--how-important-is-each-input">#</a></h1>
+<p>Now the neuron needs to decide how strongly each input should affect its calculation.</p>
+<p>That&rsquo;s what <strong>weights</strong> do.</p>
+<p>Suppose initially:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Hours studied → weight = 0.4
+</span></span><span style="display:flex;"><span>Attendance    → weight = 0.7
+</span></span></code></pre></div><p>The network calculates:</p>
+<p>$$
+x_1w_1+x_2w_2
+$$</p>
+<p>So:</p>
+<p>$$
+(0.5)(0.4)+(0.8)(0.7)
+$$</p>
+<p>$$
+=0.2+0.56
+$$</p>
+<p>$$
+=0.76
+$$</p>
+<p>The important thing:</p>
+<p><strong>We did NOT manually choose these final weights.</strong></p>
+<p>Initially, the weights are automatically initialized, usually with small values.</p>
+<p>During training, the network keeps changing them.</p>
+<p>Eventually it might discover something like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Hours studied → 0.8
+</span></span><span style="display:flex;"><span>Attendance    → 0.5
+</span></span></code></pre></div><p>if that combination helps make better predictions.</p>
+<p>So you can think:</p>
+<blockquote>
+<p><strong>Weights are the numbers the neural network learns to determine how strongly different inputs influence its output.</strong></p>
+</blockquote>
+<hr>
+<h1 id="3-bias--why-is-it-needed">3. Bias — Why is it needed?<a hidden class="anchor" aria-hidden="true" href="#3-bias--why-is-it-needed">#</a></h1>
+<p>After multiplying the inputs by their weights, we add a <strong>bias</strong>.</p>
+<p>Suppose:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>bias = 0.1
+</span></span></code></pre></div><p>Our calculation becomes:</p>
+<p>$$
+z=x_1w_1+x_2w_2+b
+$$</p>
+<p>Therefore:</p>
+<p>$$
+z=(0.5)(0.4)+(0.8)(0.7)+0.1
+$$</p>
+<p>$$
+z=0.86
+$$</p>
+<p>Why have a bias?</p>
+<p>Because without bias, the neuron is restricted in where its function can operate.</p>
+<p>Bias gives the neuron an additional adjustable value that lets it <strong>shift the result</strong>.</p>
+<p>A simple way to think about it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>weights → control the influence of inputs
+</span></span><span style="display:flex;"><span>bias    → provides an additional adjustable offset
+</span></span></code></pre></div><p>And just like weights, <strong>bias is learned during training</strong>.</p>
+<hr>
+<blockquote>
+<p>So What is a Neural Network?
+A neural network is a model that learns a relationship between inputs and outputs by passing data through multiple layers of neurons, where each neuron performs calculations using learned weights and biases.</p>
+</blockquote>
+<p>Let&rsquo;s break that down.</p>
+<p>Suppose we want to predict whether a student will pass:</p>
+<p>Hours studied
+Attendance              <br>
+Previous marks</p>
+<p>The neural network doesn&rsquo;t initially know how important each input is.</p>
+<p>It has weights that determine their importance.</p>
+<p>For example:</p>
+<p>Hours studied     → weight = 0.8
+Attendance        → weight = 0.5
+Previous marks    → weight = 0.3</p>
+<p>The neuron calculates:</p>
+<p>$$ z = x_1w_1 + x_2w_2 + x_3w_3 + b $$</p>
+<p>Then an activation function is applied:</p>
+<p>$$ output = f(z) $$</p>
+<p>During training, the network keeps changing the weights and biases so that its predictions become better.</p>
+<blockquote>
+<ol>
+<li>Who determines the initial weights?</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>The model itself doesn&rsquo;t know the correct weights initially. When we create a neural network, the weights are usually initialized automatically with small random values using an initialization method such as Xavier/Glorot or He initialization.</p>
+</blockquote>
+<p>For example:</p>
+<p>Initially:</p>
+<p>w1 = 0.12
+w2 = -0.03
+w3 = 0.08</p>
+<p>These are just starting points</p>
+<blockquote>
+<p>Then during training:
+During training, the model starts with initially assigned weights and biases. It takes the input and calculates a weighted sum, then passes the result through an activation function. This produces the model&rsquo;s prediction. The prediction is compared with the actual value using a loss function to calculate the loss. Then, through backpropagation, we calculate the gradient of the loss with respect to each weight, which tells us how much the loss changes when that weight changes. The optimizer then uses these gradients to update the weights, usually by moving them in the opposite direction of the gradient. This process is repeated over many batches and epochs, gradually improving the model&rsquo;s predictions.</p>
+</blockquote>
+<h1 id="4-weighted-sum--what-did-we-just-calculate">4. Weighted Sum — What did we just calculate?<a hidden class="anchor" aria-hidden="true" href="#4-weighted-sum--what-did-we-just-calculate">#</a></h1>
+<p>The calculation:</p>
+<p>$$
+z=x_1w_1+x_2w_2+b
+$$</p>
+<p>is called the <strong>linear transformation</strong> or weighted sum.</p>
+<p>Our neuron has now calculated:</p>
+<p>$$
+z=0.86
+$$</p>
+<p>But we&rsquo;re not finished.</p>
+<p>The neuron now passes this value through an <strong>activation function</strong>.</p>
+<hr>
+<h1 id="5-activation-function--what-does-it-actually-do">5. Activation Function — What does it actually do?<a hidden class="anchor" aria-hidden="true" href="#5-activation-function--what-does-it-actually-do">#</a></h1>
+<p>This is where many beginner explanations become confusing.</p>
+<p>The activation function takes:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0.86
+</span></span></code></pre></div><p>and transforms it according to a particular mathematical function.</p>
+<p>For example, ReLU:</p>
+<p>$$
+ReLU(x)=max(0,x)
+$$</p>
+<p>So:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>ReLU(0.86) = 0.86
+</span></span></code></pre></div><p>If the neuron had calculated:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>z = -2
+</span></span></code></pre></div><p>then:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>ReLU(-2) = 0
+</span></span></code></pre></div><p>So:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR
+    A[Inputs] --&gt; B[&#34;Weighted Sum: z = xw + b&#34;]
+    B --&gt; C[&#34;Activation: ReLU(z)&#34;]
+    C --&gt; D[Output]
+</code></pre><h3 id="but-why-do-we-need-activation">But WHY do we need activation?<a hidden class="anchor" aria-hidden="true" href="#but-why-do-we-need-activation">#</a></h3>
+<p>This is extremely important.</p>
+<p>Imagine we have multiple layers:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Input
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 1
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 2
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 3
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Output
+</span></span></code></pre></div><p>If every layer only performs:</p>
+<p>$$
+y=Wx+b
+$$</p>
+<p>with no activation function, then mathematically all those linear transformations can effectively be combined into <strong>one linear transformation</strong>.</p>
+<p>So even if we have 100 layers, the network wouldn&rsquo;t gain the ability to represent genuinely complex nonlinear relationships.</p>
+<p>Activation functions introduce <strong>non-linearity</strong>.</p>
+<p>That allows the network to learn complicated patterns.</p>
+<p>For example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Simple relationship
+</span></span><span style="display:flex;"><span>      ↓
+</span></span><span style="display:flex;"><span>Linear model can handle it
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Complex relationship
+</span></span><span style="display:flex;"><span>      ↓
+</span></span><span style="display:flex;"><span>Neural network + nonlinear activations
+</span></span><span style="display:flex;"><span>      ↓
+</span></span><span style="display:flex;"><span>Can learn much more complicated patterns
+</span></span></code></pre></div><hr>
+<h1 id="6-multiple-neurons--why-not-just-one">6. Multiple neurons — Why not just one?<a hidden class="anchor" aria-hidden="true" href="#6-multiple-neurons--why-not-just-one">#</a></h1>
+<p>One neuron can only perform a relatively simple calculation.</p>
+<p>So we put many neurons together.</p>
+<p>For example:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR
+    A[Input Features] --&gt; B1[Neuron 1]
+    A --&gt; B2[Neuron 2]
+    A --&gt; B3[Neuron 3]
+    A --&gt; B4[Neuron 4]
+
+    B1 --&gt; C[Next Layer]
+    B2 --&gt; C
+    B3 --&gt; C
+    B4 --&gt; C
+</code></pre><p>Each neuron has its <strong>own weights and bias</strong>.</p>
+<p>Therefore, each neuron can learn a different pattern.</p>
+<p>For example, conceptually:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Neuron 1 → learns something related to studying
+</span></span><span style="display:flex;"><span>Neuron 2 → learns something related to attendance
+</span></span><span style="display:flex;"><span>Neuron 3 → learns interaction between them
+</span></span><span style="display:flex;"><span>Neuron 4 → learns another useful pattern
+</span></span></code></pre></div><p>We don&rsquo;t tell the neurons what to learn.</p>
+<p>The training process determines useful patterns through the learned parameters.</p>
+<hr>
+<h1 id="7-a-layer">7. A layer<a hidden class="anchor" aria-hidden="true" href="#7-a-layer">#</a></h1>
+<p>A group of neurons forms a <strong>layer</strong>.</p>
+<p>For example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Input layer
+</span></span><span style="display:flex;"><span>     ↓
+</span></span><span style="display:flex;"><span>[Neuron] [Neuron] [Neuron] [Neuron]
+</span></span><span style="display:flex;"><span>     ↓
+</span></span><span style="display:flex;"><span>Hidden layer
+</span></span></code></pre></div><p>A neural network typically has:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR
+    A[Input Layer] --&gt; B[Hidden Layer 1]
+    B --&gt; C[Hidden Layer 2]
+    C --&gt; D[Output Layer]
+</code></pre><h3 id="input-layer">Input layer<a hidden class="anchor" aria-hidden="true" href="#input-layer">#</a></h3>
+<p>Receives the features.</p>
+<p>Example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Hours studied
+</span></span><span style="display:flex;"><span>Attendance
+</span></span><span style="display:flex;"><span>Previous marks
+</span></span></code></pre></div><h3 id="hidden-layers">Hidden layers<a hidden class="anchor" aria-hidden="true" href="#hidden-layers">#</a></h3>
+<p>Perform transformations and learn useful representations.</p>
+<h3 id="output-layer">Output layer<a hidden class="anchor" aria-hidden="true" href="#output-layer">#</a></h3>
+<p>Produces the final output required by the task.</p>
+<hr>
+<h1 id="8-what-does-a-hidden-layer-actually-learn">8. What does a hidden layer actually learn?<a hidden class="anchor" aria-hidden="true" href="#8-what-does-a-hidden-layer-actually-learn">#</a></h1>
+<p>This is a very important idea.</p>
+<p>Imagine an image classification network.</p>
+<p>Initially:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Pixels
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 1
+</span></span></code></pre></div><p>The first layers might learn relatively simple visual patterns:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>edges
+</span></span><span style="display:flex;"><span>corners
+</span></span><span style="display:flex;"><span>textures
+</span></span></code></pre></div><p>Then:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>edges
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 2
+</span></span></code></pre></div><p>can combine them into:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>shapes
+</span></span></code></pre></div><p>Then later:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>shapes
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Later layers
+</span></span></code></pre></div><p>can represent:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>eyes
+</span></span><span style="display:flex;"><span>ears
+</span></span><span style="display:flex;"><span>wheels
+</span></span><span style="display:flex;"><span>faces
+</span></span><span style="display:flex;"><span>etc.
+</span></span></code></pre></div><p>Finally:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>learned representations
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>classification
+</span></span></code></pre></div><p>The network isn&rsquo;t explicitly told:</p>
+<blockquote>
+<p>&ldquo;This neuron should detect an ear.&rdquo;</p>
+</blockquote>
+<p>The useful representations <strong>emerge from training</strong>.</p>
+<hr>
+<h1 id="9-forward-pass--putting-everything-together">9. Forward Pass — Putting everything together<a hidden class="anchor" aria-hidden="true" href="#9-forward-pass--putting-everything-together">#</a></h1>
+<p>Now we have the complete network.</p>
+<p>When an input enters the network and travels from beginning to end, that&rsquo;s called the <strong>forward pass</strong>.</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR
+    A[Input] --&gt; B[Layer 1]
+    B --&gt; C[Activation]
+    C --&gt; D[Layer 2]
+    D --&gt; E[Activation]
+    E --&gt; F[Output]
+    F --&gt; G[Prediction]
+</code></pre><p>For every layer, the basic process is:</p>
+<p>$$
+z=Wx+b
+$$</p>
+<p>then:</p>
+<p>$$
+a=f(z)
+$$</p>
+<p>The output <code>a</code> becomes the input to the next layer.</p>
+<p>So:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Input
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Linear calculation
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Activation
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Linear calculation
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Activation
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Output
+</span></span></code></pre></div><p>At the end, we get a prediction.</p>
+<hr>
+<h1 id="10-prediction">10. Prediction<a hidden class="anchor" aria-hidden="true" href="#10-prediction">#</a></h1>
+<p>Suppose our network is doing binary classification:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Pass
+</span></span><span style="display:flex;"><span>Fail
+</span></span></code></pre></div><p>The output might be:</p>
+<p>$$
+0.87
+$$</p>
+<p>We can interpret that as approximately:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>87% probability of Pass
+</span></span></code></pre></div><p>depending on the model&rsquo;s output setup.</p>
+<p>We could then use a threshold:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>prediction &gt;= 0.5 → Pass
+</span></span><span style="display:flex;"><span>prediction &lt; 0.5  → Fail
+</span></span></code></pre></div><p>But <strong>the exact output setup depends on the architecture and loss function</strong>.</p>
+<hr>
+<h1 id="11-but-how-does-the-network-know-whether-it-is-correct">11. But how does the network know whether it is correct?<a hidden class="anchor" aria-hidden="true" href="#11-but-how-does-the-network-know-whether-it-is-correct">#</a></h1>
+<p>This is where <strong>loss</strong> comes in.</p>
+<p>Suppose:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Actual answer = Pass
+</span></span><span style="display:flex;"><span>Model prediction = 0.87
+</span></span></code></pre></div><p>That&rsquo;s a pretty good prediction.</p>
+<p>But suppose:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Actual answer = Pass
+</span></span><span style="display:flex;"><span>Model prediction = 0.12
+</span></span></code></pre></div><p>That&rsquo;s terrible.</p>
+<p>We need a numerical measure of how bad the prediction is.</p>
+<p>That&rsquo;s the <strong>loss function</strong>.</p>
+<hr>
+<h1 id="12-loss-function">12. Loss Function<a hidden class="anchor" aria-hidden="true" href="#12-loss-function">#</a></h1>
+<p>The loss function takes:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Actual answer
+</span></span><span style="display:flex;"><span>+
+</span></span><span style="display:flex;"><span>Model prediction
+</span></span></code></pre></div><p>and produces a number representing the error.</p>
+<p>Conceptually:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart LR
+    A[Actual Label] --&gt; C[Loss Function]
+    B[Model Prediction] --&gt; C
+    C --&gt; D[Loss]
+</code></pre><p>For example:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Good prediction → small loss
+</span></span><span style="display:flex;"><span>Bad prediction  → large loss
+</span></span></code></pre></div><p>The goal of training is:</p>
+<blockquote>
+<p><strong>Make the loss as small as possible.</strong></p>
+</blockquote>
+<hr>
+<h1 id="13-example-of-loss">13. Example of loss<a hidden class="anchor" aria-hidden="true" href="#13-example-of-loss">#</a></h1>
+<p>Suppose:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Actual = Pass
+</span></span><span style="display:flex;"><span>Prediction = 0.95
+</span></span></code></pre></div><p>The model is confident and correct.</p>
+<p>So:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Loss → small
+</span></span></code></pre></div><p>But:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Actual = Pass
+</span></span><span style="display:flex;"><span>Prediction = 0.05
+</span></span></code></pre></div><p>The model is confidently wrong.</p>
+<p>So:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Loss → large
+</span></span></code></pre></div><p>This is why classification commonly uses <strong>cross-entropy loss</strong>.</p>
+<hr>
+<h1 id="14-now-comes-the-important-question">14. Now comes the important question<a hidden class="anchor" aria-hidden="true" href="#14-now-comes-the-important-question">#</a></h1>
+<p>We know:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Prediction
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Loss
+</span></span></code></pre></div><p>Suppose the loss is huge.</p>
+<p>What should we change?</p>
+<p>Remember that the prediction came from:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>weights
+</span></span><span style="display:flex;"><span>biases
+</span></span></code></pre></div><p>So we need to figure out:</p>
+<blockquote>
+<p><strong>Which weights caused the loss, and in which direction should we change them?</strong></p>
+</blockquote>
+<p>That&rsquo;s where <strong>backpropagation</strong> comes in.</p>
+<hr>
+<h1 id="15-backpropagation">15. Backpropagation<a hidden class="anchor" aria-hidden="true" href="#15-backpropagation">#</a></h1>
+<p>Backpropagation works <strong>backwards through the network</strong>.</p>
+<p>Forward:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Input
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 1
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 2
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Prediction
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Loss
+</span></span></code></pre></div><p>Backward:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Loss
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 2
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 1
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Gradients
+</span></span></code></pre></div><p>The purpose is to calculate the <strong>gradient of the loss with respect to each parameter</strong>.</p>
+<p>For example:</p>
+<p>$$
+\frac{\partial L}{\partial w_1}
+$$</p>
+<p>means:</p>
+<blockquote>
+<p>How much does the loss change if we change (w_1)?</p>
+</blockquote>
+<hr>
+<h1 id="16-what-is-a-gradient">16. What is a gradient?<a hidden class="anchor" aria-hidden="true" href="#16-what-is-a-gradient">#</a></h1>
+<p>Imagine you&rsquo;re standing on a mountain.</p>
+<p>You want to go downhill.</p>
+<p>The gradient tells you something about:</p>
+<blockquote>
+<p><strong>Which direction makes the value increase most quickly.</strong></p>
+</blockquote>
+<p>So to reduce the loss, we generally move in the <strong>opposite direction of the gradient</strong>.</p>
+<p>For a weight:</p>
+<p>$$
+w_{new}=w_{old}-\eta\frac{\partial L}{\partial w}
+$$</p>
+<p>where:</p>
+<ul>
+<li>(w) = weight</li>
+<li>(L) = loss</li>
+<li>(\eta) = learning rate</li>
+</ul>
+<hr>
+<h1 id="17-where-does-backpropagation-get-those-gradients">17. Where does backpropagation get those gradients?<a hidden class="anchor" aria-hidden="true" href="#17-where-does-backpropagation-get-those-gradients">#</a></h1>
+<p>Using the <strong>chain rule</strong>.</p>
+<p>Suppose:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>w
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>z
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>activation
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>prediction
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>loss
+</span></span></code></pre></div><p>The loss depends on the prediction.</p>
+<p>The prediction depends on the activation.</p>
+<p>The activation depends on <code>z</code>.</p>
+<p>And <code>z</code> depends on <code>w</code>.</p>
+<p>So calculus allows us to calculate:</p>
+<p>$$
+\frac{\partial L}{\partial w}
+$$</p>
+<p>by multiplying the appropriate derivatives along the path.</p>
+<p>That&rsquo;s the mathematical foundation of backpropagation.</p>
+<hr>
+<h1 id="18-optimizer">18. Optimizer<a hidden class="anchor" aria-hidden="true" href="#18-optimizer">#</a></h1>
+<p>Now we have gradients.</p>
+<p>But gradients themselves don&rsquo;t update the weights.</p>
+<p>An <strong>optimizer uses those gradients to update the parameters</strong>.</p>
+<p>Common optimizers:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>SGD
+</span></span><span style="display:flex;"><span>Adam
+</span></span><span style="display:flex;"><span>AdamW
+</span></span></code></pre></div><p>Conceptually:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+    A[Prediction] --&gt; B[Loss]
+    B --&gt; C[Backpropagation]
+    C --&gt; D[Gradients]
+    D --&gt; E[Optimizer]
+    E --&gt; F[Updated Weights &amp; Biases]
+    F --&gt; A
+</code></pre><p>For simple gradient descent:</p>
+<p>$$
+w_{new}=w_{old}-\eta gradient
+$$</p>
+<hr>
+<h1 id="19-learning-rate">19. Learning rate<a hidden class="anchor" aria-hidden="true" href="#19-learning-rate">#</a></h1>
+<p>The learning rate controls <strong>how big the parameter update is</strong>.</p>
+<p>Suppose:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>current weight = 0.5
+</span></span><span style="display:flex;"><span>gradient = 0.2
+</span></span><span style="display:flex;"><span>learning rate = 0.1
+</span></span></code></pre></div><p>Then:</p>
+<p>$$
+w_{new}=0.5-(0.1)(0.2)
+$$</p>
+<p>$$
+w_{new}=0.48
+$$</p>
+<p>So the weight changed from:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0.50 → 0.48
+</span></span></code></pre></div><p>If the learning rate were much larger, the update would be much larger.</p>
+<p>That&rsquo;s why choosing a good learning rate matters.</p>
+<hr>
+<h1 id="20-then-we-repeat">20. Then we repeat<a hidden class="anchor" aria-hidden="true" href="#20-then-we-repeat">#</a></h1>
+<p>This is the actual learning process.</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+    A[Training Data] --&gt; B[Forward Pass]
+    B --&gt; C[Prediction]
+    C --&gt; D[Calculate Loss]
+    D --&gt; E[Backpropagation]
+    E --&gt; F[Calculate Gradients]
+    F --&gt; G[Optimizer Updates Weights]
+    G --&gt; B
+</code></pre><p>The network repeats this process <strong>many times</strong>.</p>
+<p>Each update tries to make the model slightly better.</p>
+<p>Over thousands or millions of updates, the weights can become very useful.</p>
+<hr>
+<h1 id="21-where-do-epochs-and-batches-fit">21. Where do epochs and batches fit?<a hidden class="anchor" aria-hidden="true" href="#21-where-do-epochs-and-batches-fit">#</a></h1>
+<p>Suppose you have:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>100,000 training examples
+</span></span></code></pre></div><p>You usually don&rsquo;t give all 100,000 to the model at once.</p>
+<p>Instead:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Batch 1 → 64 examples
+</span></span><span style="display:flex;"><span>Batch 2 → 64 examples
+</span></span><span style="display:flex;"><span>Batch 3 → 64 examples
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>For each batch:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>forward
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>loss
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>backward
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>update weights
+</span></span></code></pre></div><p>After the model has processed all 100,000 examples once:</p>
+<blockquote>
+<p><strong>1 epoch is complete.</strong></p>
+</blockquote>
+<p>Then you can start another epoch.</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+    A[Dataset] --&gt; B[Batch 1]
+    A --&gt; C[Batch 2]
+    A --&gt; D[Batch 3]
+    A --&gt; E[...]
+    
+    B --&gt; F[Forward → Loss → Backward → Update]
+    C --&gt; F
+    D --&gt; F
+    E --&gt; F
+
+    F --&gt; G[End of Epoch]
+    G --&gt; H[Next Epoch]
+    H --&gt; B
+</code></pre><hr>
+<h1 id="22-so-who-actually-learns">22. So WHO actually learns?<a hidden class="anchor" aria-hidden="true" href="#22-so-who-actually-learns">#</a></h1>
+<p>This is the key mental model.</p>
+<p>The <strong>architecture doesn&rsquo;t learn</strong>.</p>
+<p>The <strong>activation function doesn&rsquo;t learn</strong>.</p>
+<p>The <strong>optimizer doesn&rsquo;t learn the task by itself</strong>.</p>
+<p>The thing that gets learned is primarily the model&rsquo;s <strong>parameters</strong>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Weights
+</span></span><span style="display:flex;"><span>Biases
+</span></span></code></pre></div><p>Training repeatedly changes these parameters based on the gradients.</p>
+<p>So:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>                  Neural Network
+</span></span><span style="display:flex;"><span>                        │
+</span></span><span style="display:flex;"><span>             ┌──────────┴──────────┐
+</span></span><span style="display:flex;"><span>             ↓                     ↓
+</span></span><span style="display:flex;"><span>        Architecture           Parameters
+</span></span><span style="display:flex;"><span>       (chosen by us)          (learned)
+</span></span><span style="display:flex;"><span>             │                     │
+</span></span><span style="display:flex;"><span>       layers, neurons       weights, biases
+</span></span><span style="display:flex;"><span>       activations
+</span></span></code></pre></div><hr>
+<h1 id="23-one-complete-example">23. One complete example<a hidden class="anchor" aria-hidden="true" href="#23-one-complete-example">#</a></h1>
+<p>Let&rsquo;s put the entire story together.</p>
+<p>Student:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Hours studied = 5
+</span></span><span style="display:flex;"><span>Attendance = 80%
+</span></span></code></pre></div><h3 id="step-1--input">Step 1 — Input<a hidden class="anchor" aria-hidden="true" href="#step-1--input">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>[0.5, 0.8]
+</span></span></code></pre></div><h3 id="step-2--multiply-by-weights">Step 2 — Multiply by weights<a hidden class="anchor" aria-hidden="true" href="#step-2--multiply-by-weights">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>0.5 × w1
+</span></span><span style="display:flex;"><span>0.8 × w2
+</span></span></code></pre></div><h3 id="step-3--add-them--bias">Step 3 — Add them + bias<a hidden class="anchor" aria-hidden="true" href="#step-3--add-them--bias">#</a></h3>
+<p>$$
+z=x_1w_1+x_2w_2+b
+$$</p>
+<h3 id="step-4--activation">Step 4 — Activation<a hidden class="anchor" aria-hidden="true" href="#step-4--activation">#</a></h3>
+<p>$$
+a=ReLU(z)
+$$</p>
+<h3 id="step-5--continue-through-hidden-layers">Step 5 — Continue through hidden layers<a hidden class="anchor" aria-hidden="true" href="#step-5--continue-through-hidden-layers">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Layer 1
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 2
+</span></span><span style="display:flex;"><span> ↓
+</span></span><span style="display:flex;"><span>Layer 3
+</span></span></code></pre></div><p>Each layer performs similar transformations.</p>
+<h3 id="step-6--output">Step 6 — Output<a hidden class="anchor" aria-hidden="true" href="#step-6--output">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Prediction = 0.87
+</span></span></code></pre></div><h3 id="step-7--compare-with-actual-answer">Step 7 — Compare with actual answer<a hidden class="anchor" aria-hidden="true" href="#step-7--compare-with-actual-answer">#</a></h3>
+<p>Suppose:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Actual = 1
+</span></span></code></pre></div><p>where <code>1 = Pass</code>.</p>
+<h3 id="step-8--calculate-loss">Step 8 — Calculate loss<a hidden class="anchor" aria-hidden="true" href="#step-8--calculate-loss">#</a></h3>
+<p>The loss function determines how wrong:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>prediction = 0.87
+</span></span><span style="display:flex;"><span>actual = 1
+</span></span></code></pre></div><h3 id="step-9--backpropagation">Step 9 — Backpropagation<a hidden class="anchor" aria-hidden="true" href="#step-9--backpropagation">#</a></h3>
+<p>Calculate:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>How much did each weight contribute to the loss?
+</span></span></code></pre></div><p>This produces gradients.</p>
+<h3 id="step-10--optimizer">Step 10 — Optimizer<a hidden class="anchor" aria-hidden="true" href="#step-10--optimizer">#</a></h3>
+<p>Use gradients to modify:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>weights
+</span></span><span style="display:flex;"><span>biases
+</span></span></code></pre></div><h3 id="step-11--repeat">Step 11 — Repeat<a hidden class="anchor" aria-hidden="true" href="#step-11--repeat">#</a></h3>
+<p>The same process happens for the next batch and eventually many epochs.</p>
+<hr>
+<h1 id="24-the-entire-thing-in-one-diagram">24. The entire thing in ONE diagram<a hidden class="anchor" aria-hidden="true" href="#24-the-entire-thing-in-one-diagram">#</a></h1>
+<p>This is the diagram I recommend keeping in your notes:</p>
+<pre tabindex="0"><code class="language-mermaid" data-lang="mermaid">flowchart TD
+    A[Input Data] --&gt; B[Layer 1]
+    B --&gt; C[Weighted Sum: Wx + b]
+    C --&gt; D[Activation Function]
+    D --&gt; E[Layer 2]
+    E --&gt; F[Weighted Sum: Wx + b]
+    F --&gt; G[Activation Function]
+    G --&gt; H[Output Layer]
+    H --&gt; I[Prediction]
+    I --&gt; J[Loss Function]
+    J --&gt; K[Loss]
+    K --&gt; L[Backpropagation]
+    L --&gt; M[Gradients]
+    M --&gt; N[Optimizer]
+    N --&gt; O[Update Weights &amp; Biases]
+    O --&gt; B
+</code></pre><h3 id="the-most-important-distinction">The most important distinction:<a hidden class="anchor" aria-hidden="true" href="#the-most-important-distinction">#</a></h3>
+<p><strong>Forward pass:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Input → layers → prediction → loss
+</span></span></code></pre></div><p><strong>Backward pass:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Loss → gradients
+</span></span></code></pre></div><p><strong>Optimization:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Gradients → updated weights/biases
+</span></span></code></pre></div><p>Then repeat.</p>
+<hr>
+<h2 id="and-this-is-exactly-what-pytorch-will-automate-for-you">And this is exactly what PyTorch will automate for you<a hidden class="anchor" aria-hidden="true" href="#and-this-is-exactly-what-pytorch-will-automate-for-you">#</a></h2>
+<p>Later, when you see:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>optimizer<span style="color:#f92672">.</span>zero_grad()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output <span style="color:#f92672">=</span> model(x)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>loss <span style="color:#f92672">=</span> criterion(output, y)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>loss<span style="color:#f92672">.</span>backward()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>optimizer<span style="color:#f92672">.</span>step()
+</span></span></code></pre></div><p>you should now be able to mentally translate it as:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>zero_grad()
+</span></span><span style="display:flex;"><span>    ↓
+</span></span><span style="display:flex;"><span>clear old gradients
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model(x)
+</span></span><span style="display:flex;"><span>    ↓
+</span></span><span style="display:flex;"><span>forward pass
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>criterion(...)
+</span></span><span style="display:flex;"><span>    ↓
+</span></span><span style="display:flex;"><span>calculate loss
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>loss.backward()
+</span></span><span style="display:flex;"><span>    ↓
+</span></span><span style="display:flex;"><span>backpropagation
+</span></span><span style="display:flex;"><span>    ↓
+</span></span><span style="display:flex;"><span>calculate gradients
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>optimizer.step()
+</span></span><span style="display:flex;"><span>    ↓
+</span></span><span style="display:flex;"><span>update weights and biases
+</span></span></code></pre></div><p><strong>This is the foundation.</strong> Once this is completely clear, <code>nn.Linear</code>, <code>nn.Module</code>, <code>DataLoader</code>, CNNs, and eventually Transformers will make much more sense rather than looking like unrelated PyTorch syntax.</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">My New Hugo Project</a></span> · 
+
+    
+    
+    <span>
+        Powered by
+        <a href="https://gohugo.io/?utm_source=papermod" rel="noopener" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" id="top-link" class="top-link hidden" aria-label="go to top" title="Go to Top (Alt + G)" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-up">
+        <polyline points="17 11 12 6 7 11"></polyline>
+        <polyline points="17 18 12 13 7 18"></polyline>
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var toplink = document.getElementById("top-link");
+    window.onscroll = function () {
+        const scrollThreshold = window.innerHeight;
+        if (document.body.scrollTop > scrollThreshold || document.documentElement.scrollTop > scrollThreshold) {
+            toplink.classList.remove("hidden");
+        } else {
+            toplink.classList.add("hidden");
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
