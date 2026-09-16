@@ -4,7 +4,6 @@ date: 2026-09-16
 draft: false
 ---
 ## Where we are in the roadmap
-
 You can think of your journey as:
 
 ```mermaid
